@@ -15,18 +15,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int x = 1;
+        int x = 3;
         int y = 3;
-
+        Vector3Int startPosition = new Vector3Int(x, y);
         GameObject gamePiece = Instantiate(gamePiecePrefab);
-        gamePiece.GetComponent<GamePiece>().Initialize(new Vector3Int(x, y, 1), hexGrid.GetHexAt(new Vector3Int(x, y)));
-        //gamePiece.GetComponent<GamePiece>().PlaceOnGrid(new Vector3Int(x, y, 1));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gamePiece.GetComponent<GamePiece>().Initialize(startPosition, hexGrid.GetHexAt(startPosition));
     }
 
 

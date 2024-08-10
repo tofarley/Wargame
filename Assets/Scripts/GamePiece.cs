@@ -7,13 +7,9 @@ using UnityEngine;
 
 public class GamePiece : MonoBehaviour
 {
-    // Grid coordinates
-    public Vector3Int gridPosition;
-
     // Reference to the SpriteRenderer component
     private SpriteRenderer spriteRenderer;
 
-    private Grid grid;
     private GameManager gameManager;
     
     private bool isSelected = false;
@@ -46,49 +42,9 @@ public class GamePiece : MonoBehaviour
         GameObject gameObject = GameObject.FindWithTag("GameManager");
 
         gameManager = gameObject.GetComponent<GameManager>();
-        //grid = GetComponent<Grid>();
-        //OnMouseDown();
+
     }
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        // Update logic can be added here if needed
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     Debug.Log("mouse button pressed");
-        //     // Perform a raycast to detect the clicked object
-        //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //     RaycastHit hit;
-
-        //     if (Physics.Raycast(ray, out hit))
-        //     {
-        //         // Check if the clicked object is this GamePiece
-        //         //Debug.Log(hit.ToString());
-        //         if (hit.transform == transform)
-        //         {
-        //             Vector3Int currentPos = GetGridPosition();
-
-        //             List<Vector3Int> positionsToHighlight = GetPositionsWithinRange(currentPos, searchRange);
-
-        //             if (!isSelected) {
-
-        //                 gameManager.HighlightPositions(positionsToHighlight, true);
-        //                 isSelected = true;
-        //             }
-        //             else
-        //             {
-        //                 gameManager.HighlightPositions(positionsToHighlight, false);
-        //                 isSelected = false;
-        //             }
-
-        //         }
-        //     }
-        // }
-    }
 
     // Method to set the sprite of the GamePiece
     public void SetSprite(Sprite sprite)
@@ -97,19 +53,6 @@ public class GamePiece : MonoBehaviour
         {
             spriteRenderer.sprite = sprite;
         }
-    }
-
-    // Method to place the GamePiece on the grid
-    public void PlaceOnGrid(Vector3Int newGridPosition, Grid grid)
-    {
-        this.grid = grid;
-        gridPosition = newGridPosition;
-        transform.position = grid.CellToWorld(gridPosition);
-    }
-
-    public Vector3Int GetGridPosition()
-    {
-        return gridPosition;
     }
 
     private void OnMouseDown()
@@ -125,7 +68,6 @@ public class GamePiece : MonoBehaviour
         }
         Debug.Log("GamePiece clicked!");
         HexGrid hexGrid = FindObjectOfType<HexGrid>(); // Find the HexGrid in the scene
-        //hexGrid.HighlightAdjacentHexes(hexCoordinates, true);
         List<Vector3Int> positionsToHighlight = GetPositionsWithinRange(new Vector3Int(hexCoordinates.x, hexCoordinates.y), 3);
         hexGrid.HighlightHexes(positionsToHighlight, isSelected);
 
@@ -155,53 +97,5 @@ public class GamePiece : MonoBehaviour
 
         return new List<Vector3Int>(positions);
     }
-
-    // Method to get positions within a certain range
-    // List<Vector3Int> GetPositionsWithinRange(Vector3Int center, int range)
-    // {
-    //     List<Vector3Int> positions = new List<Vector3Int>();
-
-    //     //int offset = 0;
-    //     int width = (range * 2);
-
-    //     for (int y = center.y; y <= center.y + range; y++)
-    //     {
-    //         // offset is 1 on odd rows.
-    //         //offset = y % 2;
-
-    //         for (int x = 0; x <= width; x++)
-    //         {
-    //             if (!positions.Contains(new Vector3Int(center.x - (width / 2) + x, y)))
-    //             {
-    //                 positions.Add(new Vector3Int(center.x - (width / 2) + x, y));
-    //             }
-
-
-    //         }
-    //         width--;
-    //     }
-
-    //     width = (range * 2);
-
-    //     for (int y = center.y; y >= center.y - range; y--)
-    //     {
-    //         // offset is 1 on odd rows.
-    //         //offset = y % 2;
-
-    //         for (int x = 0; x <= width; x++)
-    //         {
-
-    //             if (!positions.Contains(new Vector3Int(center.x - (width / 2) + x, y)))
-    //             {
-    //                 positions.Add(new Vector3Int(center.x - (width / 2) + x, y));
-    //             }
-
-    //         }
-    //         width--;
-    //     }
-    //     return positions;
-
-    // }
-
 }
 

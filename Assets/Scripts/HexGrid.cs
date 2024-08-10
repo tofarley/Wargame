@@ -6,7 +6,6 @@ using UnityEngine;
 public class HexGrid : MonoBehaviour
 {
     public GameObject hexPrefab;
-    public GameObject gamePiecePrefab;  // Assign a prefab for the GamePiece
     public int width = 12;
     public int height = 12;
     public float xOffset = 0.882f;
