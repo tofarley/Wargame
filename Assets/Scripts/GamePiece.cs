@@ -4,12 +4,17 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GamePiece : MonoBehaviour
 {
+    // Grid coordinates
+    public Vector3Int gridPosition;
+
     // Reference to the SpriteRenderer component
     private SpriteRenderer spriteRenderer;
 
+    private Grid grid;
     private GameManager gameManager;
     
     private bool isSelected = false;
@@ -32,6 +37,7 @@ public class GamePiece : MonoBehaviour
         hexCoordinates = coordinates;
         currentHexTile = hexTile;
         this.transform.position = hexTile.transform.position; // Align the game piece with the hex tile
+        transform.Rotate(0, 0, -30);
     }
 
     // Start is called before the first frame update
@@ -42,9 +48,17 @@ public class GamePiece : MonoBehaviour
         GameObject gameObject = GameObject.FindWithTag("GameManager");
 
         gameManager = gameObject.GetComponent<GameManager>();
-
+        //grid = GetComponent<Grid>();
+        //OnMouseDown();
     }
 
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     // Method to set the sprite of the GamePiece
     public void SetSprite(Sprite sprite)
@@ -53,6 +67,32 @@ public class GamePiece : MonoBehaviour
         {
             spriteRenderer.sprite = sprite;
         }
+    }
+
+    // Method to rotate the sprite 60 degrees to the left
+    public void RotateLeft()
+    {
+        transform.Rotate(0, 0, 60); // Rotate 60 degrees around the z-axis
+    }
+
+    // Method to rotate the sprite 60 degrees to the right
+    public void RotateRight()
+    {
+        transform.Rotate(0, 0, -60); // Rotate -60 degrees around the z-axis
+    }
+
+    // Method to place the GamePiece on the grid
+    public void PlaceOnGrid(Vector3Int newGridPosition, Grid grid)
+    {
+        this.grid = grid;
+        this.gridPosition = newGridPosition;
+        transform.position = grid.CellToWorld(gridPosition);
+        transform.Rotate(0, 0, 30);
+    }
+
+    public Vector3Int GetGridPosition()
+    {
+        return gridPosition;
     }
 
     private void OnMouseDown()
@@ -64,10 +104,12 @@ public class GamePiece : MonoBehaviour
         }
         else
         {
+            RotateRight();
             isSelected = true;
         }
         Debug.Log("GamePiece clicked!");
         HexGrid hexGrid = FindObjectOfType<HexGrid>(); // Find the HexGrid in the scene
+        //hexGrid.HighlightAdjacentHexes(hexCoordinates, true);
         List<Vector3Int> positionsToHighlight = GetPositionsWithinRange(new Vector3Int(hexCoordinates.x, hexCoordinates.y), 3);
         hexGrid.HighlightHexes(positionsToHighlight, isSelected);
 
@@ -97,5 +139,7 @@ public class GamePiece : MonoBehaviour
 
         return new List<Vector3Int>(positions);
     }
+
+
 }
 
